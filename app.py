@@ -14,7 +14,10 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Replace with your Vercel URL in production
+    allow_origins=[
+        "https://geo-tb.vercel.app",
+        "http://localhost:3000",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -225,6 +228,7 @@ def preprocess(raw: dict) -> pd.DataFrame:
 
 
 # Response model
+
 
 class PredictionResponse(BaseModel):
     prediction: int  # 0 = favorable, 1 = unfavorable
