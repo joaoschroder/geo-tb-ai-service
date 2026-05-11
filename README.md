@@ -17,10 +17,6 @@ Trained on RS 2007-2018 data using XGBoost with optimized hyperparameters.
 ```bash
 pip install -r requirements.txt
 
-# Place your model files in the model/ directory:
-# model/xgb_final.pkl
-# model/features_final.pkl
-
 uvicorn app:app --reload --port 8000
 ```
 
@@ -28,8 +24,7 @@ uvicorn app:app --reload --port 8000
 
 1. Push this repo to GitHub
 2. Create a new Railway project from the GitHub repo
-3. Add model files to `model/` directory
-4. Railway auto-deploys on push
+3. Railway auto-deploys on push
 
 ## API Endpoints
 
@@ -98,7 +93,7 @@ tb-predictor-api/
 ├── railway.json        # Railway deployment config
 ├── Procfile            # Process definition
 ├── model/
-│   ├── xgb_final.pkl       # Trained XGBoost model
-│   └── features_final.pkl  # Feature list
+│   ├── model_rs_0718.pkl       # Trained XGBoost model
+│   └── features_rs_0718.pkl  # Feature list
 └── README.md
 ```
