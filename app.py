@@ -4,8 +4,6 @@ import pandas as pd
 from fastapi import FastAPI, HTTPException, Request, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-import tempfile
-import dbfread
 import os
 
 app = FastAPI(
@@ -253,33 +251,6 @@ def root():
 @app.get("/health")
 def health():
     return {"status": "ok"}
-
-
-@app.post("/process")
-async def process_dbf(file: UploadFile = File(...)):
-    try:
-        # Save uploaded file to tmp directory
-        suffix = os.path.splitext(file.filename)[1] or ".dbf"
-        with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as tmp:
-            content = await file.read()
-            tmp.write(content)
-            tmp_path = tmp.name
-
-        # Read DBF file
-        table = dbfread.DBF(tmp_path, load=True)
-        records = [dict(record) for record in table]
-
-        # Filter to RS (state code 43)
-        notifications = [
-            r for r in records if str(r.get("SG_UF", "")).strip() in ["43", "RS"]
-        ]
-
-        # Clean up temp file
-        os.unlink(tmp_path)
-
-        return {"notifications": notifications}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
 
 
 @app.post("/predict", response_model=PredictionResponse)
